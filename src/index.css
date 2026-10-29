@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #1c5f17;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- Teclado virtual do totem (mesmo padrão dos totens de cadastro) ----
+   Especificidade alta de propósito: o CSS do react-simple-keyboard é importado
+   depois e venceria num empate. Cores da paleta Garden Ville. */
+.totem-keyboard-painel {
+  border-radius: 2.4vw;
+  padding: 1.4vh 1.6vw;
+  background: rgba(11, 61, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.totem-keyboard.hg-theme-default {
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+}
+
+.totem-keyboard.hg-theme-default .hg-row + .hg-row {
+  margin-top: 0.8vh;
+}
+
+.totem-keyboard.hg-theme-default .hg-button {
+  height: 4.2vh;
+  border-radius: 1.4vw;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 4px solid #0b3d1c;
+  background: #2f8a24;
+  color: #ffffff;
+  font-size: 3.2vw;
+  font-weight: 700;
+  box-shadow: none;
+  transition: background 0.12s, transform 0.08s;
+}
+
+.totem-keyboard.hg-theme-default .hg-row .hg-button:not(:last-child) {
+  margin-right: 0.7vw;
+}
+
+.totem-keyboard.hg-theme-default .hg-button:active,
+.totem-keyboard.hg-theme-default .hg-button.hg-activeButton {
+  background: #a6c638;
+  border-bottom-color: #6d8a1c;
+  color: #0b3d1c;
+  transform: translateY(2px);
+}
+
+.totem-keyboard.hg-theme-default .hg-button.hg-functionBtn {
+  background: #1c5f17;
+  font-size: 2.4vw;
+}
+
+.totem-keyboard.hg-theme-default .hg-button[data-skbtn="{space}"] {
+  flex-grow: 6;
+}
+
+.totem-keyboard.hg-theme-default .hg-button[data-skbtn="{enter}"] {
+  flex-grow: 2;
+  background: #ffffff;
+  color: #1c5f17;
+}
+
+.totem-keyboard.hg-theme-default .hg-button[data-skbtn="{backspace}"] {
+  flex-grow: 1.6;
+  white-space: nowrap;
+}
+
+/* Atalhos de e-mail (@gmail.com...) ficam com letra menor para caber. */
+.totem-keyboard.hg-theme-default .hg-button[data-skbtn^="@"],
+.totem-keyboard.hg-theme-default .hg-button[data-skbtn^="."] {
+  font-size: 2vw;
+}
+
+.totem-keyboard-numeric.hg-theme-default .hg-row {
+  justify-content: center;
+}
+
+.totem-keyboard-numeric.hg-theme-default .hg-button {
+  height: 6vh;
+  max-width: 24vw;
+  font-size: 4.6vw;
+}
+
+.totem-keyboard-numeric.hg-theme-default .hg-button.hg-functionBtn,
+.totem-keyboard-numeric.hg-theme-default .hg-button[data-skbtn="{enter}"] {
+  font-size: 3vw;
+}
+
+/* page-flip: sem fundo branco atrás das páginas. */
+.stf__parent {
+  margin: 0 auto;
+}
