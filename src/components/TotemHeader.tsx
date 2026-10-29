@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom'
 import { empreendimento } from '../data/gardenVille'
-import { Leaf } from './Leaves'
 
+/** Logo do Garden Ville e da Protenge lado a lado. */
 export default function TotemHeader() {
   return (
-    <header className="relative z-10 flex h-[11vh] shrink-0 items-center justify-center gap-[5vw] overflow-hidden bg-white px-[6vw] shadow-lg">
-      <Leaf className="absolute -left-[3vw] -top-[4vh] w-[10vw] rotate-[120deg] opacity-25" color="#7cc94f" />
-      <Leaf className="absolute -right-[3vw] -top-[4vh] w-[10vw] -rotate-[120deg] opacity-25" color="#7cc94f" />
-      <Link to="/" className="h-[8vh]">
+    <header className="relative z-10 flex shrink-0 items-center justify-center gap-[5vw] pt-[2.6vh]">
+      <Link to="/inicio" className="h-[8.5vh]">
         <img src={empreendimento.logo} alt="Garden Ville Residence" className="h-full w-auto object-contain" />
       </Link>
-      <span className="h-[5vh] w-px bg-emerald-900/20" />
-      <img src={empreendimento.logoConstrutora} alt="Protenge" className="h-[2.6vh] w-auto object-contain" />
+      <span className="h-[6vh] w-px bg-white/25" />
+      <div className="flex flex-col items-start gap-[0.8vh]">
+        <span className="text-[1.4vw] font-medium tracking-[0.3em] text-white/50 uppercase">Realização</span>
+        <img src={empreendimento.logoConstrutora} alt="Protenge" className="h-[2vh] w-auto object-contain" />
+      </div>
     </header>
   )
 }

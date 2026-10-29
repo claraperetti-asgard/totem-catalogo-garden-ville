@@ -1,58 +1,50 @@
 import QRCode from 'qrcode'
 import { useEffect, useState } from 'react'
 import { empreendimento } from '../data/gardenVille'
+import BotaoFechar from './BotaoFechar'
+import MapaInterativo from './MapaInterativo'
 import SectionTitle from './SectionTitle'
 
 export default function LocationModal({ onClose }: { onClose: () => void }) {
   const [qr, setQr] = useState('')
 
   useEffect(() => {
-    QRCode.toDataURL(empreendimento.mapsUrl, { margin: 1, width: 400, color: { dark: '#0b3d1c' } })
+    QRCode.toDataURL(empreendimento.mapsUrl, { margin: 1, width: 400, color: { dark: '#052b16' } })
       .then(setQr)
       .catch(() => setQr(''))
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 flex animate-[fade_.35s_ease] flex-col gap-[2.4vh] bg-[#0b3d1c]/95 px-[6vw] py-[4vh] backdrop-blur">
+    <div className="fixed inset-0 z-50 flex animate-[fade_.35s_ease] flex-col gap-[2.4vh] bg-gv-950/95 px-[6vw] py-[4vh] backdrop-blur-xl">
       <div className="flex items-center justify-between">
-        <SectionTitle>Localização</SectionTitle>
-        <button
-          onClick={onClose}
-          className="flex h-[7vw] w-[7vw] items-center justify-center rounded-full bg-white text-[3.8vw] font-bold text-[#1c5f17] shadow-lg active:scale-95"
-          aria-label="Fechar"
-        >
-          ✕
-        </button>
+        <div className="flex-1 pr-[4vw]">
+          <SectionTitle eyebrow="Como chegar">Localização</SectionTitle>
+        </div>
+        <BotaoFechar onClick={onClose} label="Fechar" />
       </div>
 
-      <div className="flex items-center gap-[4vw] rounded-[1.2vw] bg-white px-[4vw] py-[2.4vh] text-[#0b3d1c] shadow-xl">
+      <div className="flex items-center gap-[4vw] rounded-[2.4vw] bg-white/[0.06] px-[4vw] py-[2.4vh] text-white ring-1 ring-white/15">
         <div className="flex-1">
-          <p className="text-[3.4vw] font-bold leading-tight">{empreendimento.endereco}</p>
-          <p className="text-[2.4vw] font-medium opacity-70">{empreendimento.cidade}</p>
-          <p className="mt-[1vh] text-[2.2vw] font-semibold text-[#2f8a24]">{empreendimento.site}</p>
+          <p className="font-display text-[3.8vw] leading-tight">{empreendimento.endereco}</p>
+          <p className="mt-[0.4vh] text-[2.4vw] font-medium text-white/60">{empreendimento.cidade}</p>
+          <p className="mt-[1.4vh] text-[2.2vw] font-semibold tracking-wide text-lima">{empreendimento.site}</p>
         </div>
         {qr && (
-          <div className="flex flex-col items-center gap-[0.6vh]">
-            <img src={qr} alt="QR Code da localização" className="h-[18vw] w-[18vw]" />
-            <span className="text-[1.6vw] font-semibold uppercase tracking-wider opacity-70">Abra no celular</span>
+          <div className="flex flex-col items-center gap-[1vh]">
+            <img src={qr} alt="QR Code da localização" className="h-[18vw] w-[18vw] rounded-[1.6vw] bg-white p-[1vw]" />
+            <span className="text-[1.5vw] font-semibold tracking-[0.25em] text-white/60 uppercase">Abra no celular</span>
           </div>
         )}
       </div>
 
-      <div className="flex-1 overflow-hidden rounded-[1.2vw] border-[0.5vw] border-white bg-white shadow-2xl">
-        <iframe
-          title="Mapa Garden Ville"
-          src={empreendimento.mapsEmbed}
-          className="h-full w-full"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+      <div className="relative flex-1 overflow-hidden rounded-[2.4vw] shadow-2xl ring-1 ring-white/15">
+        <MapaInterativo />
       </div>
 
       <img
         src={empreendimento.mapaLocalizacao}
         alt="Localização Garden Ville"
-        className="h-[22vh] w-full rounded-[1.2vw] border-[0.5vw] border-white object-cover shadow-2xl"
+        className="h-[22vh] w-full rounded-[2.4vw] object-cover shadow-2xl ring-1 ring-white/15"
       />
     </div>
   )

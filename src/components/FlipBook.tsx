@@ -57,7 +57,7 @@ export default function FlipBook({
     onReady?.({
       prev: () => flip()?.flipPrev(),
       next: () => flip()?.flipNext(),
-      goTo: (page) => flip()?.turnToPage(page),
+      goTo: (page) => flip()?.flip(page),
     })
   }, [onReady])
 
@@ -108,7 +108,7 @@ export default function FlipBook({
           }}
         >
           {revista.map((src, i) => (
-            <div key={src} className="overflow-hidden bg-[#0b3d1c]">
+            <div key={src} className="overflow-hidden bg-gv-800">
               <img
                 src={src}
                 alt={`Página ${i + 1}`}

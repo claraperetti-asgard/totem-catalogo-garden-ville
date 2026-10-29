@@ -1,54 +1,39 @@
+import { apiUrl } from '../api'
+
+/** Lead como vem da API (o telefone fica guardado só com os dígitos). */
 export type Lead = {
-  nome: string
-  celular: string
-  email: string
-  criadoEm: string
+  id: number
+  name: string
+  telefone: string | null
+  email: string | null
+  created_at: string
 }
 
-const STORAGE_KEY = 'garden-ville:leads'
-
-/** Opcional: defina VITE_LEADS_ENDPOINT no .env para enviar os cadastros para um servidor/webhook. */
-const ENDPOINT = import.meta.env.VITE_LEADS_ENDPOINT as string | undefined
-
-export function getLeads(): Lead[] {
+/** Grava o cadastro no banco SQLite do totem. Devolve a mensagem de erro, ou null se deu certo. */
+export async function saveLead(data: { nome: string; celular: string; email: string }): Promise<string | null> {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') as Lead[]
-  } catch {
-    return []
+    const resposta = await fetch(apiUrl('/leads'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: data.nome, telefone: data.celular, email: data.email }),
+    })
+    if (resposta.ok) return null
+    const corpo = await resposta.json().catch(() => null)
+    return corpo?.message || 'Não foi possível salvar. Tente novamente.'
+  } catch (error) {
+    console.error('Erro ao salvar cadastro:', error)
+    return 'Sem conexão com o servidor. Chame o responsável.'
   }
 }
 
-export function clearLeads() {
-  localStorage.removeItem(STORAGE_KEY)
+export async function getLeads(): Promise<Lead[]> {
+  const resposta = await fetch(apiUrl('/leads'))
+  if (!resposta.ok) throw new Error('Erro ao buscar respostas.')
+  return resposta.json()
 }
 
-export async function saveLead(data: Omit<Lead, 'criadoEm'>) {
-  const lead: Lead = { ...data, criadoEm: new Date().toISOString() }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...getLeads(), lead]))
-
-  if (ENDPOINT) {
-    try {
-      await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...lead, empreendimento: 'Garden Ville Residence' }),
-      })
-    } catch {
-      // Sem internet: o cadastro continua salvo no totem.
-    }
-  }
-}
-
-export function leadsToCsv(leads: Lead[]) {
-  const escape = (v: string) => `"${v.replace(/"/g, '""')}"`
-  const rows = leads.map((l) =>
-    [l.nome, l.celular, l.email, new Date(l.criadoEm).toLocaleString('pt-BR')].map(escape).join(';'),
-  )
-  return ['Nome;Celular;Email;Data', ...rows].join('\n')
-}
-
-export function formatCelular(value: string) {
-  const d = value.replace(/\D/g, '').slice(0, 11)
+export function formatCelular(value: string | null) {
+  const d = String(value || '').replace(/\D/g, '').slice(0, 11)
   if (d.length <= 2) return d.length ? `(${d}` : ''
   if (d.length <= 7) return `(${d.slice(0, 2)}) ${d.slice(2)}`
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`

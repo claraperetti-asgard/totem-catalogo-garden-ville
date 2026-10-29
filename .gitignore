@@ -26,3 +26,7 @@ dist-ssr
 # Mídias originais do cliente (pesadas demais para o GitHub).
 # O app usa as versões otimizadas em src/assets/garden-ville-web.
 src/assets/midias-gard-ville/
+
+# Banco SQLite local do totem e variáveis de ambiente
+*.db
+.env
